@@ -1,3 +1,5 @@
+import LinkedList from "./LinkedList.js";
+
 // HashMap factory function
 // Assignment limitation: Use the following snippet whenever you access a bucket through an index.
 // We want to throw an error if we try to access an out-of-bounds index:
@@ -9,6 +11,7 @@
 export default function HashMap() {
   let capacity = 16;
   let loadFactor = 0.75;
+  let buckets = new Array(capacity);
 
   function hash(key) {
     let hashCode = 0;
@@ -23,7 +26,33 @@ export default function HashMap() {
 
   // If a key already exists, then the old value is overwritten
   // Remember to grow your buckets to double their capacity when your hash map reaches the load factor
-  function set(key, value) {}
+  function set(key, value) {
+    const index = hash(key);
+
+    if (buckets[index] === undefined) {
+      let newList = LinkedList();
+
+      newList.prepend(value);
+      buckets[index] = newList.head();
+      return;
+    }
+
+    // we know buckets[index] contains the head of a linked list
+    // traverse the list
+    // if a node in the list contains value, update the entry
+    // if not, append a new node with the value
+
+    // let existingList = buckets[index];
+    // let foundIndex = existingList.find(value);
+
+    // if (foundIndex !== null) {
+    //   let node = existingList.at(foundIndex);
+    //   node.value = value;
+    //   return;
+    // }
+
+    // existingList.append(value);
+  }
 
   // Takes one argument as a key and returns the value that is assigned to this key. If a key is not found, return null
   function get(key) {}
@@ -47,5 +76,5 @@ export default function HashMap() {
   // Example: [[firstKey, firstValue], [secondKey, secondValue]]
   function entries() {}
 
-  return {};
+  return { set, buckets };
 }
