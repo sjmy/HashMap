@@ -84,8 +84,27 @@ export default function LinkedList() {
     }
   }
 
+  // Returns true if the passed in key is in the list and otherwise returns false
+  function containsKey(key) {
+    if (headNode.key === key) {
+      return true;
+    }
+
+    let tmpHead = headNode;
+
+    while (tmpHead !== tailNode) {
+      tmpHead = tmpHead.nextNode;
+
+      if (tmpHead.key === key) {
+        return true;
+      }
+    }
+
+    return false;
+  }
+
   // Returns true if the passed in value is in the list and otherwise returns false
-  function contains(value) {
+  function containsValue(value) {
     if (headNode.value === value) {
       return true;
     }
@@ -103,8 +122,29 @@ export default function LinkedList() {
     return false;
   }
 
+  // Returns the index of the node containing key, or null if not found
+  function findKey(key) {
+    if (headNode.key === key) {
+      return 0;
+    }
+
+    let tmpCount = 0;
+    let tmpHead = headNode;
+
+    while (tmpHead !== null) {
+      tmpCount += 1;
+      tmpHead = tmpHead.nextNode;
+
+      if (tmpHead.key === key) {
+        return tmpCount;
+      }
+    }
+
+    return null;
+  }
+
   // Returns the index of the node containing value, or null if not found
-  function find(value) {
+  function findValue(value) {
     if (headNode.value === value) {
       return 0;
     }
@@ -239,8 +279,10 @@ export default function LinkedList() {
     tail,
     at,
     pop,
-    contains,
-    find,
+    containsKey,
+    containsValue,
+    findKey,
+    findValue,
     toString,
     insertAt,
     removeAt,
