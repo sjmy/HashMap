@@ -1,4 +1,5 @@
 import LinkedList from "./LinkedList.js";
+import Node from "./Node.js";
 
 // HashMap factory function
 // Assignment limitation: Use the following snippet whenever you access a bucket through an index.
@@ -29,29 +30,30 @@ export default function HashMap() {
   function set(key, value) {
     const index = hash(key);
 
+    // If the bucket is empty, add a new linked list, append the key/value pair, place the head in the bucket
     if (buckets[index] === undefined) {
       let newList = LinkedList();
 
-      newList.prepend(value);
+      newList.prepend(key, value);
       buckets[index] = newList.head();
       return;
     }
 
-    // we know buckets[index] contains the head of a linked list
-    // traverse the list
-    // if a node in the list contains value, update the entry
-    // if not, append a new node with the value
+    // If the bucket already has a linked list head in it, traverse the list and check if any keys match
+    // If they do, update the value. If they don't, add a new entry to the linked list
+    let tmpHead = buckets[index];
 
-    // let existingList = buckets[index];
-    // let foundIndex = existingList.find(value);
+    while (tmpHead !== null) {
+      if (tmpHead.key === key) {
+        tmpHead.value = value;
+        return;
+      } else if (tmpHead.nextNode === null) {
+        let newNode = Node(key, value);
+        tmpHead.nextNode = newNode;
+      }
 
-    // if (foundIndex !== null) {
-    //   let node = existingList.at(foundIndex);
-    //   node.value = value;
-    //   return;
-    // }
-
-    // existingList.append(value);
+      tmpHead = tmpHead.nextNode;
+    }
   }
 
   // Takes one argument as a key and returns the value that is assigned to this key. If a key is not found, return null

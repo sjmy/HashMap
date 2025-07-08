@@ -6,11 +6,11 @@ export default function LinkedList() {
   let tailNode = null;
 
   // Adds a new node containing value to the end of the list
-  function append(value = null) {
+  function append(key = null, value = null) {
     if (headNode === null) {
-      prepend(value);
+      prepend(key, value);
     } else {
-      const newNode = Node(value);
+      const newNode = Node(key, value);
       let tmpHead = headNode;
 
       while (tmpHead.nextNode !== null) {
@@ -24,8 +24,8 @@ export default function LinkedList() {
   }
 
   // Adds a new node containing value to the start of the list
-  function prepend(value = null) {
-    const newNode = Node(value);
+  function prepend(key = null, value = null) {
+    const newNode = Node(key, value);
     newNode.nextNode = headNode;
     headNode = newNode;
     nodeCount += 1;
@@ -124,7 +124,7 @@ export default function LinkedList() {
     return null;
   }
 
-  // String representation. The format should be: ( value ) -> ( value ) -> ( value ) -> null
+  // String representation. The format should be: ( key: value ) -> ( key: value ) -> ( key: value ) -> null
   function toString() {
     let output = "";
     let tmpHead = headNode;
@@ -135,7 +135,7 @@ export default function LinkedList() {
     }
 
     while (tmpHead !== null) {
-      output += `( ${tmpHead.value} ) -> `;
+      output += `( ${tmpHead.key}: ${tmpHead.value} ) -> `;
 
       if (tmpHead.nextNode === null) {
         output += "null";
@@ -148,8 +148,8 @@ export default function LinkedList() {
 
   // Extra credit
 
-  // Inserts a new node with the provided value at the given index
-  function insertAt(value, index) {
+  // Inserts a new node with the provided key and value at the given index
+  function insertAt(key, value, index) {
     if (headNode === null) {
       throw new Error("List is empty!");
     }
@@ -160,13 +160,13 @@ export default function LinkedList() {
 
     // If the index requested is the beginning of the list, we already have a function that prepends
     if (index === 0) {
-      prepend(value);
+      prepend(key, value);
       return;
     }
 
     // If the index requested is the end of the list, we already have a function that appends
     if (index === nodeCount) {
-      append(value);
+      append(key, value);
       return;
     }
 
@@ -184,7 +184,7 @@ export default function LinkedList() {
       currentNode = currentNode.nextNode;
 
       if (tmpCount === index) {
-        const newNode = Node(value);
+        const newNode = Node(key, value);
         newNode.nextNode = currentNode;
         previousNode.nextNode = newNode;
         nodeCount += 1;
