@@ -30,6 +30,10 @@ export default function HashMap() {
   function set(key, value) {
     const index = hash(key);
 
+    if (index < 0 || index >= buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
     // If the bucket is empty, add a new linked list, append the key/value pair, place the head in the bucket
     if (buckets[index] === undefined) {
       let newList = LinkedList();
@@ -57,7 +61,29 @@ export default function HashMap() {
   }
 
   // Takes one argument as a key and returns the value that is assigned to this key. If a key is not found, return null
-  function get(key) {}
+  function get(key) {
+    const index = hash(key);
+
+    if (index < 0 || index >= buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    if (buckets[index] === undefined) {
+      return null;
+    }
+
+    let tmpHead = buckets[index];
+
+    while (tmpHead !== null) {
+      if (tmpHead.key === key) {
+        return tmpHead.value;
+      }
+
+      tmpHead = tmpHead.nextNode;
+    }
+
+    return null;
+  }
 
   // Takes a key as an argument and returns true or false based on whether or not the key is in the hash map
   function has(key) {}
@@ -78,5 +104,5 @@ export default function HashMap() {
   // Example: [[firstKey, firstValue], [secondKey, secondValue]]
   function entries() {}
 
-  return { set, buckets };
+  return { set, get, buckets };
 }
