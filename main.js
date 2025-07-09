@@ -11,4 +11,4 @@ test.set("Deltron", "3030");
 
 console.table(test.buckets);
 
-console.table(test.get("Deltron"));
+console.table(test.has("Vancouver"));

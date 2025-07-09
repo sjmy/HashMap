@@ -86,7 +86,29 @@ export default function HashMap() {
   }
 
   // Takes a key as an argument and returns true or false based on whether or not the key is in the hash map
-  function has(key) {}
+  function has(key) {
+    const index = hash(key);
+
+    if (index < 0 || index >= buckets.length) {
+      throw new Error("Trying to access index out of bounds");
+    }
+
+    if (buckets[index] === undefined) {
+      return false;
+    }
+
+    let tmpHead = buckets[index];
+
+    while (tmpHead !== null) {
+      if (tmpHead.key === key) {
+        return true;
+      }
+
+      tmpHead = tmpHead.nextNode;
+    }
+
+    return false;
+  }
 
   // Returns the number of stored keys in the hash map
   function length() {}
@@ -104,5 +126,5 @@ export default function HashMap() {
   // Example: [[firstKey, firstValue], [secondKey, secondValue]]
   function entries() {}
 
-  return { set, get, buckets };
+  return { set, get, has, buckets };
 }
