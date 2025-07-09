@@ -13,6 +13,7 @@ export default function HashMap() {
   let capacity = 16;
   let loadFactor = 0.75;
   let buckets = new Array(capacity);
+  let bucketCount = 0;
 
   function hash(key) {
     let hashCode = 0;
@@ -40,6 +41,7 @@ export default function HashMap() {
 
       newList.prepend(key, value);
       buckets[index] = newList.head();
+      bucketCount += 1;
       return;
     }
 
@@ -54,6 +56,7 @@ export default function HashMap() {
       } else if (tmpHead.nextNode === null) {
         let newNode = Node(key, value);
         tmpHead.nextNode = newNode;
+        bucketCount += 1;
       }
 
       tmpHead = tmpHead.nextNode;
@@ -111,20 +114,77 @@ export default function HashMap() {
   }
 
   // Returns the number of stored keys in the hash map
-  function length() {}
+  function length() {
+    return bucketCount;
+  }
 
   // Removes all entries in the hash map
-  function clear() {}
+  function clear() {
+    buckets = new Array(capacity);
+    bucketCount = 0;
+  }
 
   // Returns an array containing all the keys inside the hash map
-  function keys() {}
+  function keys() {
+    let keysArray = [];
+
+    for (let i = 0; i < capacity; i++) {
+      if (buckets[i] === undefined) {
+        continue;
+      }
+
+      let tmpHead = buckets[i];
+
+      while (tmpHead !== null) {
+        keysArray.push(tmpHead.key);
+        tmpHead = tmpHead.nextNode;
+      }
+    }
+
+    return keysArray;
+  }
 
   // Returns an array containing all the values
-  function values() {}
+  function values() {
+    let valuesArray = [];
+
+    for (let i = 0; i < capacity; i++) {
+      if (buckets[i] === undefined) {
+        continue;
+      }
+
+      let tmpHead = buckets[i];
+
+      while (tmpHead !== null) {
+        valuesArray.push(tmpHead.value);
+        tmpHead = tmpHead.nextNode;
+      }
+    }
+
+    return valuesArray;
+  }
 
   // Returns an array that contains each key, value pair
   // Example: [[firstKey, firstValue], [secondKey, secondValue]]
-  function entries() {}
+  function entries() {
+    let entriesArray = [];
 
-  return { set, get, has, buckets };
+    for (let i = 0; i < capacity; i++) {
+      if (buckets[i] === undefined) {
+        continue;
+      }
+
+      let tmpHead = buckets[i];
+
+      while (tmpHead !== null) {
+        let entry = [tmpHead.key, tmpHead.value];
+        entriesArray.push(entry);
+        tmpHead = tmpHead.nextNode;
+      }
+    }
+
+    return entriesArray;
+  }
+
+  return { set, get, has, length, clear, keys, values, entries };
 }

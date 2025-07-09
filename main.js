@@ -9,6 +9,7 @@ test.set("Toronto", "Blue Jays");
 test.set("Abbotsford", "Canucks");
 test.set("Deltron", "3030");
 
-console.table(test.buckets);
-
-console.table(test.has("Vancouver"));
+console.log(test.length());
+console.table(test.keys());
+console.table(test.values());
+console.table(test.entries());
