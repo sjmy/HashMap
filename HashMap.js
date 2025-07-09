@@ -26,6 +26,16 @@ export default function HashMap() {
     return hashCode;
   }
 
+  function increaseCapacity() {
+    let items = entries();
+    capacity *= 2;
+    buckets = new Array(capacity);
+
+    for (let i = 0; i < items.length; i++) {
+      set(items[i][0], items[i][1]);
+    }
+  }
+
   // If a key already exists, then the old value is overwritten
   // Remember to grow your buckets to double their capacity when your hash map reaches the load factor
   function set(key, value) {
@@ -42,6 +52,10 @@ export default function HashMap() {
       newList.prepend(key, value);
       buckets[index] = newList.head();
       bucketCount += 1;
+
+      if (bucketCount > capacity * loadFactor) {
+        increaseCapacity();
+      }
       return;
     }
 
@@ -57,6 +71,10 @@ export default function HashMap() {
         let newNode = Node(key, value);
         tmpHead.nextNode = newNode;
         bucketCount += 1;
+
+        if (bucketCount > capacity * loadFactor) {
+          increaseCapacity();
+        }
       }
 
       tmpHead = tmpHead.nextNode;
@@ -120,6 +138,7 @@ export default function HashMap() {
 
   // Removes all entries in the hash map
   function clear() {
+    capacity = 16;
     buckets = new Array(capacity);
     bucketCount = 0;
   }
